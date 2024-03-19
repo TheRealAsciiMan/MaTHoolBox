@@ -1,6 +1,5 @@
 import math
 
-
 def racine2(a, b, c):
     """Calcul de la racine d'une équation du 2nd degré ax²+bx+c
     @params :
@@ -19,9 +18,8 @@ def racine2(a, b, c):
         s = (-b) / (2 * a)
         return s
     elif Δ > 0:
-        sqrt_delta = math.sqrt(Δ)
-        s1 = (-b - sqrt_delta) / (2 * a)
-        s2 = (-b + sqrt_delta) / (2 * a)
+        s1 = (-b - math.sqrt(Δ)) / (2 * a)
+        s2 = (-b + math.sqrt(Δ)) / (2 * a)
         return [s1, s2]
     elif Δ < 0:
         return None
@@ -62,7 +60,6 @@ def racine_rec(a, b, fonc=lambda x: x ** 3, p=1e-6):
     T = b - a
     x = (a + b) / 2
     y = fonc(x)
-
     if T <= p:
         return a
     elif y > 0:
