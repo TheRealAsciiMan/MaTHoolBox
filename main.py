@@ -85,3 +85,23 @@ def derive(a, fonc=lambda x: x ** 3, h=1e-3, p=1e-6):
         h /= 2
         deriv = (fonc(a + h) - fonc(a)) / h
     return deriv
+
+
+def integrale(a=0, b=5, fonc=lambda x: x ** 3, n=15):
+    """Calcul l'intégrale d'une fonction entre le point a et le point b
+    @params :
+    - fonc : fonction python
+    - a : 1ère borne de l'intervalle
+    - h : 2ème borne de l"intervalle
+    - n : Nombre de trapèzes
+    @returns :
+    - Une valeur approchée de l'intégrale
+    """
+    surf = 0
+    if a > b : a, b = b, a
+    dist = (b - a) / n
+    for i in range(n):
+        g = a + dist * i
+        d = g + dist
+        surf += (dist * (fonc(d)+fonc(g) )) / 2
+    return surf
