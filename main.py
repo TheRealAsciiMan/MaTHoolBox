@@ -92,7 +92,7 @@ def integrale(a=0, b=5, fonc=lambda x: x ** 3, n=15):
     @params :
     - fonc : fonction python
     - a : 1ère borne de l'intervalle
-    - h : 2ème borne de l"intervalle
+    - h : 2ème borne de l'intervalle
     - n : Nombre de trapèzes
     @returns :
     - Une valeur approchée de l'intégrale
