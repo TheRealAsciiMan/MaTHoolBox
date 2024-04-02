@@ -1,4 +1,5 @@
-import math
+from math import sqrt
+from time import sleep
 
 def racine2(a, b, c):
     """Calcul de la racine d'une équation du 2nd degré ax²+bx+c
@@ -18,8 +19,8 @@ def racine2(a, b, c):
         s = (-b) / (2 * a)
         return s
     elif Δ > 0:
-        s1 = (-b - math.sqrt(Δ)) / (2 * a)
-        s2 = (-b + math.sqrt(Δ)) / (2 * a)
+        s1 = (-b - sqrt(Δ)) / (2 * a)
+        s2 = (-b + sqrt(Δ)) / (2 * a)
         return [s1, s2]
     elif Δ < 0:
         return None
@@ -87,7 +88,7 @@ def derive(a, fonc=lambda x: x ** 3, h=1e-3, p=1e-6):
     return deriv
 
 
-def integrale(a=0, b=5, fonc=lambda x: x ** 3, n=15):
+def integrale(a=0.0, b=5.0, fonc=lambda x: x ** 3, n=15):
     """Calcul l'intégrale d'une fonction entre le point a et le point b
     @params :
     - fonc : fonction python
@@ -129,19 +130,18 @@ Un programme qui permet de résoudre certains problèmes de Mathématiques Appli
 
 def menu():
     print("""
-    Veuillez Choisir l'outil à utiliser :
-    1. Résolution d'équation de degré 2
-    2. Résolution d'équation de degré n par dichotomie
-    3. Calcule la dérivée d'une fonction en un point
-    4. Calcule l'intégral d'une fonction d'un point a à un point b
-    5. Quitter
+Veuillez choisir l'outil à utiliser :
+1. Résolution d'équation de degré 2
+2. Résolution d'équation de degré n par dichotomie
+3. Calcule la dérivée d'une fonction en un point
+4. Calcule l'intégral d'une fonction d'un point a à un point b
+5. Quitter
     
     """)
 
-def degre_menu():
+def degre2_menu():
     while True:
-        print("""Résolution d'équation de la forme ax²+bx+c=0, veuillez choisir les facteurs :
-        """)
+        print("\nRésolution d'équation de la forme ax²+bx+c=0, veuillez choisir les facteurs :")
         try:
             a = float(input("a : "))
             b = float(input("b : "))
@@ -149,20 +149,115 @@ def degre_menu():
             break
         except:
             print("Ce ne sont pas des nombres, veuillez réessayer !")
+    print(f"Les solutions de l'équation {a}x²+{b}x+{c}=0 sont : {racine2(a, b, c)}")
+    sleep(2)
 
-
-
-
-
-while True:
-    menu()
-    reponse = input()
-    if reponse == "1":
-        degre_menu()
-    if reponse == "2":
-    if reponse == "3":
-    if reponse == "4":
-    if reponse == "5":
-        break
+def degren_menu():
+    while True:
+        print("\nRésolution d'équation ...=0, veuillez choisir une borne inférieure, une borne supérieure, une fonction et une précision (optionnel)")
+        try:
+            a = float(input("Borne inférieure : "))
+            b = float(input("Borne supérieure : "))
+            temp = input("La fonction (par exemple : 5+x**2) : ")
+            c = eval(f"lambda x: {temp}")
+            p = input("Précision (par défaut : 1e-6) : ")
+            if p != "":
+                p = float(p)
+            rec = input("Utiliser la méthode récursive (conseillée) ? Oui/Non : ")
+            if rec == '':
+                rec = "o"
+            else:
+                rec = rec.lower()[0]
+                if rec != 'o' and rec != 'n':
+                    raise ValueError
+            break
+        except:
+            print("Ce ne sont pas des nombres ou ce n'est pas une fonction, veuillez réessayer !")
+    if p == "":
+        if rec == "o":
+            print(f"Une solution de l'équation {temp}=0 entre {a} et {b} est environ : {racine_rec(a, b, c)}")
+        else:
+            print(f"Une solution de l'équation {temp}=0 entre {a} et {b} est environ : {racine(a, b, c)}")
     else:
-        print("Erreur, veuillez choisir une option du menu")
+        if rec == "o":
+            print(f"Une solution de l'équation {temp}=0 entre {a} et {b} est environ : {racine_rec(a, b, c, p)}")
+        else:
+            print(f"Une solution de l'équation {temp}=0 entre {a} et {b} est environ : {racine(a, b, c, p)}")
+    sleep(2)
+
+
+def derive_menu():
+    while True:
+        print("\nCalcul du nombre dérivé d’une fonction en un point")
+        try:
+            a = float(input("Coordonnée x du point : "))
+            temp = input("La fonction (par exemple : 5+x**2) : ")
+            c = eval(f"lambda x: {temp}")
+            p = input("Précision (par défaut : 1e-6) : ")
+            if p != "":
+                p = float(p)
+            break
+        except:
+            print("Ce ne sont pas des nombres ou ce n'est pas une fonction, veuillez réessayer !")
+    if p == "":
+        print(f"La dérivée de la fonction f(x)={temp} au point d'abscisse {a} est d'environ : {derive(a, c)}")
+    else:
+        print(f"La dérivée de la fonction f(x)={temp} au point d'abscisse {a} est d'environ : {derive(a, c, p=p)}")
+    sleep(2)
+
+def integrale_menu():
+    while True:
+        print("\nCalcul de l'intégrale d'une fonction dans un intervalle")
+        try:
+            a = float(input("Borne inférieure : "))
+            b = float(input("Borne supérieure : "))
+            temp = input("La fonction (par exemple : 5+x**2) : ")
+            c = eval(f"lambda x: {temp}")
+            rec = input("Utiliser la méthode récursive (conseillée) ? Oui/Non : ")
+            if rec == '':
+                rec = "o"
+                p = input("Précision (par défaut : 1e-6) : ")
+                if p != "":
+                    p = float(p)
+            else:
+                rec = rec.lower()[0]
+                if rec != 'o' and rec != 'n':
+                    raise ValueError
+                n = input("Nombre de division de la fonction en trapèzes (par défaut : 15) : ")
+                if n != "":
+                    n = int(n)
+            break
+        except:
+            print("Ce ne sont pas des nombres ou ce n'est pas une fonction, veuillez réessayer !")
+    if rec == "o":
+        if p == '':
+            print(f"L'intégral de la fonction {temp} entre {a} et {b} est de : {integrale_rec(a, b, c)}")
+        else:
+            print(f"L'intégral de la fonction {temp} entre {a} et {b} est de : {integrale_rec(a, b, c, p)}")
+    else:
+        if n == '':
+            print(f"L'intégral de la fonction {temp} entre {a} et {b} est de : {integrale(a, b, c)}")
+        else:
+            print(f"L'intégral de la fonction {temp} entre {a} et {b} est de : {integrale(a, b, c, n)}")
+    sleep(2)
+
+
+
+if __name__ == "__main__":
+    while True:
+        menu()
+        reponse = input()
+        if reponse == "1":
+            degre2_menu()
+        elif reponse == "2":
+            degren_menu()
+        elif reponse == "3":
+            derive_menu()
+        elif reponse == "4":
+            integrale_menu()
+        elif reponse == "5":
+            print("Au revoir !")
+            sleep(2)
+            break
+        else:
+            print("Erreur, veuillez choisir une option du menu")
